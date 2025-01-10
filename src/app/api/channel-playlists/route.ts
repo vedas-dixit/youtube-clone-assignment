@@ -1,17 +1,17 @@
-import { NextApiRequest, NextApiResponse } from 'next';
+import { NextResponse } from 'next/server';
 
 const YT_API_KEY = process.env.YT_API_KEY;
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  if (req.method !== 'GET') {
-    return res.status(405).json({ error: 'Method Not Allowed' });
-  }
-
+export async function GET(request: Request) {
   try {
-    const { channelId } = req.query;
+    const { searchParams } = new URL(request.url);
+    const channelId = searchParams.get('channelId');
 
-    if (!channelId || Array.isArray(channelId)) {
-      return res.status(400).json({ error: "Valid Channel ID is required" });
+    if (!channelId) {
+      return NextResponse.json(
+        { error: "Valid Channel ID is required" },
+        { status: 400 }
+      );
     }
 
     const YT_PLAYLISTS_URL = `https://www.googleapis.com/youtube/v3/playlists?part=snippet,contentDetails&channelId=${channelId}&maxResults=10&key=${YT_API_KEY}`;
@@ -20,13 +20,19 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     if (!response.ok) {
       const data = await response.json();
-      return res.status(response.status).json({ error: data.error.message });
+      return NextResponse.json(
+        { error: data.error.message },
+        { status: response.status }
+      );
     }
 
     const data = await response.json();
-    res.status(200).json(data);
+    return NextResponse.json(data);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: "Internal Server Error" });
+    return NextResponse.json(
+      { error: "Internal Server Error" },
+      { status: 500 }
+    );
   }
 }
