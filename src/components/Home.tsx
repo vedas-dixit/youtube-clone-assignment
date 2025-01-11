@@ -1,7 +1,7 @@
-"use client"
+"use client";
 import { signIn, useSession } from "next-auth/react";
 import { useEffect } from "react";
-import { useRouter } from 'next/navigation';
+import { useRouter } from "next/navigation";
 
 export default function HomeComponent() {
   const { data: session } = useSession();
@@ -9,7 +9,7 @@ export default function HomeComponent() {
 
   useEffect(() => {
     if (session) {
-      router.push('/dashboard')
+      router.push("/dashboard");
     }
   }, [session, router]);
 
@@ -28,8 +28,8 @@ export default function HomeComponent() {
           <li>UC_x5XG1OV2P6uZZ5FSM9Ttw</li>
           <li>UCsT0YIqwnpJCM-mx7-gSA4Q</li>
         </ul>
-        <button 
-          className="px-6 py-2 bg-blue-600 text-white rounded-full hover:bg-blue-700 transition-colors" 
+        <button
+          className="px-6 py-2 bg-blue-600 text-white rounded-full hover:bg-blue-700 transition-colors"
           onClick={() => signIn("google")}
         >
           Sign in to Continue

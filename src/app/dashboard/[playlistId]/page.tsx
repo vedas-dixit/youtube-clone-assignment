@@ -21,13 +21,19 @@ interface Video {
   snippet: VideoSnippet;
 }
 
-export default function PlaylistVideos({ params }: { params: Promise<{ playlistId: string }> }) {
+export default function PlaylistVideos({
+  params,
+}: {
+  params: Promise<{ playlistId: string }>;
+}) {
   const { data: session } = useSession();
   const [videos, setVideos] = useState<Video[]>([]);
   const [loading, setLoading] = useState(true);
-  
+
   // Ensure that params is resolved before using it
-  const [resolvedParams, setResolvedParams] = useState<{ playlistId: string } | null>(null);
+  const [resolvedParams, setResolvedParams] = useState<{
+    playlistId: string;
+  } | null>(null);
 
   useEffect(() => {
     async function resolveParams() {
@@ -41,7 +47,10 @@ export default function PlaylistVideos({ params }: { params: Promise<{ playlistI
     if (resolvedParams?.playlistId && session?.accessToken) {
       async function getVideos() {
         try {
-          const data = await fetchPlaylistVideos(session?.accessToken || "", resolvedParams?.playlistId || "");
+          const data = await fetchPlaylistVideos(
+            session?.accessToken || "",
+            resolvedParams?.playlistId || "",
+          );
           setVideos(data.items);
         } catch (error) {
           console.error("Error fetching videos:", error);
@@ -117,7 +126,10 @@ export default function PlaylistVideos({ params }: { params: Promise<{ playlistI
 
           <div className="space-y-2">
             {videos.map((video, index) => (
-              <div key={video.id} className="flex gap-4 p-2 hover:bg-[#272727] rounded-lg group">
+              <div
+                key={video.id}
+                className="flex gap-4 p-2 hover:bg-[#272727] rounded-lg group"
+              >
                 <div className="text-gray-400 w-8 text-center">{index + 1}</div>
                 <div className="relative flex-shrink-0">
                   <div className="aspect-video w-40 rounded-lg overflow-hidden">
@@ -129,8 +141,12 @@ export default function PlaylistVideos({ params }: { params: Promise<{ playlistI
                   </div>
                 </div>
                 <div className="flex-1 min-w-0">
-                  <h3 className="text-sm font-medium line-clamp-2">{video.snippet.title}</h3>
-                  <p className="text-sm text-gray-400 mt-1">{video.snippet.channelTitle}</p>
+                  <h3 className="text-sm font-medium line-clamp-2">
+                    {video.snippet.title}
+                  </h3>
+                  <p className="text-sm text-gray-400 mt-1">
+                    {video.snippet.channelTitle}
+                  </p>
                 </div>
                 <button className="opacity-0 group-hover:opacity-100 p-2">
                   <MoreVertical size={16} className="text-gray-400" />

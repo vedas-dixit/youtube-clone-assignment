@@ -1,15 +1,10 @@
-import './globals.css';
+import "./globals.css";
 import HomeComponent from "@/components/Home";
 
-
-
 export default function Home() {
-
   return (
     <>
-      
       <HomeComponent />
     </>
-
   );
 }

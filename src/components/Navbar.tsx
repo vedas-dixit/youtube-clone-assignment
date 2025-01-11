@@ -1,7 +1,13 @@
 "use client";
 
 import { signOut, useSession, signIn } from "next-auth/react";
-import { FaYoutube, FaSearch, FaHome, FaBell, FaUserCircle } from "react-icons/fa";
+import {
+  FaYoutube,
+  FaSearch,
+  FaHome,
+  FaBell,
+  FaUserCircle,
+} from "react-icons/fa";
 import { HiOutlineVideoCamera } from "react-icons/hi";
 import { BsGrid } from "react-icons/bs";
 
@@ -26,9 +32,12 @@ export default function Navbar() {
 
       <div className="flex items-center space-x-6">
         <FaHome size={24} className="text-gray-700 cursor-pointer" />
-        <HiOutlineVideoCamera size={24} className="text-gray-700 cursor-pointer" />
+        <HiOutlineVideoCamera
+          size={24}
+          className="text-gray-700 cursor-pointer"
+        />
         <FaBell size={24} className="text-gray-700 cursor-pointer" />
-        
+
         {session ? (
           <div className="flex items-center space-x-3">
             <FaUserCircle size={30} className="text-gray-700 cursor-pointer" />
@@ -41,7 +50,12 @@ export default function Navbar() {
             </button>
           </div>
         ) : (
-          <button onClick={()=>signIn("google")} className="text-blue-600 hover:text-blue-800">Sign In</button>
+          <button
+            onClick={() => signIn("google")}
+            className="text-blue-600 hover:text-blue-800"
+          >
+            Sign In
+          </button>
         )}
 
         <BsGrid size={24} className="text-gray-700 cursor-pointer" />

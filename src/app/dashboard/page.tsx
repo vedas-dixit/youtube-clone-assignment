@@ -30,7 +30,6 @@ interface Playlist {
   };
 }
 
-
 export default function Dashboard() {
   const { data: session } = useSession();
   const [playlists, setPlaylists] = useState<Playlist[]>([]);
@@ -90,7 +89,7 @@ export default function Dashboard() {
     <div className="min-h-screen bg-[#0F0F0F] text-white pt-9 pl-20">
       <div className="mb-6">
         <h1 className="text-2xl font-semibold mb-4">Playlists</h1>
-        
+
         <div className="relative flex items-center space-x-2">
           <input
             type="text"
@@ -104,49 +103,71 @@ export default function Dashboard() {
             disabled={searchLoading}
             className="p-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition"
           >
-            {searchLoading ? <Loader2 className="w-5 h-5 animate-spin" /> : "Find This Channel's Playlists"}
+            {searchLoading ? (
+              <Loader2 className="w-5 h-5 animate-spin" />
+            ) : (
+              "Find This Channel's Playlists"
+            )}
           </button>
         </div>
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-4">
-        {(searchedPlaylists.length > 0 ? searchedPlaylists : playlists).map((playlist) => (
-          <div key={playlist.id} className="group">
-            <div className="relative">
-              <Link href={`/dashboard/${playlist.id}`} className="block relative">
-                <div className="relative aspect-video rounded-lg overflow-hidden bg-[#272727]">
-                  <img
-                    src={playlist.snippet.thumbnails.medium.url}
-                    alt={playlist.snippet.title}
-                    className="w-full h-full object-cover"
-                  />
-                  <div className="absolute bottom-2 right-2 bg-black bg-opacity-80 px-2 py-1 text-xs rounded">
-                    {playlist.contentDetails?.itemCount || 0} {playlist.contentDetails?.itemCount === 1 ? "video" : "videos"}
+        {(searchedPlaylists.length > 0 ? searchedPlaylists : playlists).map(
+          (playlist) => (
+            <div key={playlist.id} className="group">
+              <div className="relative">
+                <Link
+                  href={`/dashboard/${playlist.id}`}
+                  className="block relative"
+                >
+                  <div className="relative aspect-video rounded-lg overflow-hidden bg-[#272727]">
+                    <img
+                      src={playlist.snippet.thumbnails.medium.url}
+                      alt={playlist.snippet.title}
+                      className="w-full h-full object-cover"
+                    />
+                    <div className="absolute bottom-2 right-2 bg-black bg-opacity-80 px-2 py-1 text-xs rounded">
+                      {playlist.contentDetails?.itemCount || 0}{" "}
+                      {playlist.contentDetails?.itemCount === 1
+                        ? "video"
+                        : "videos"}
+                    </div>
                   </div>
-                </div>
-              </Link>
-              
-              <button className="absolute top-2 right-2 p-1.5 rounded-full bg-[#272727] bg-opacity-90 opacity-0 group-hover:opacity-100 transition-opacity">
-                <MoreVertical size={16} />
-              </button>
-            </div>
-
-            <div className="mt-2">
-              <Link href={`/dashboard/${playlist.id}`}>
-                <h3 className="font-medium text-sm line-clamp-2 hover:text-gray-300">
-                  {playlist.snippet.title}
-                </h3>
-              </Link>
-              <div className="flex flex-col mt-1 text-xs text-gray-400">
-                <span>{playlist.status?.privacyStatus || "Public"} • Playlist</span>
-                <span>Updated {new Date(playlist.snippet.publishedAt).toLocaleDateString()}</span>
-                <Link href={`/dashboard/${playlist.id}`} className="text-gray-400 hover:text-white mt-1">
-                  View full playlist
                 </Link>
+
+                <button className="absolute top-2 right-2 p-1.5 rounded-full bg-[#272727] bg-opacity-90 opacity-0 group-hover:opacity-100 transition-opacity">
+                  <MoreVertical size={16} />
+                </button>
+              </div>
+
+              <div className="mt-2">
+                <Link href={`/dashboard/${playlist.id}`}>
+                  <h3 className="font-medium text-sm line-clamp-2 hover:text-gray-300">
+                    {playlist.snippet.title}
+                  </h3>
+                </Link>
+                <div className="flex flex-col mt-1 text-xs text-gray-400">
+                  <span>
+                    {playlist.status?.privacyStatus || "Public"} • Playlist
+                  </span>
+                  <span>
+                    Updated{" "}
+                    {new Date(
+                      playlist.snippet.publishedAt,
+                    ).toLocaleDateString()}
+                  </span>
+                  <Link
+                    href={`/dashboard/${playlist.id}`}
+                    className="text-gray-400 hover:text-white mt-1"
+                  >
+                    View full playlist
+                  </Link>
+                </div>
               </div>
             </div>
-          </div>
-        ))}
+          ),
+        )}
       </div>
     </div>
   );

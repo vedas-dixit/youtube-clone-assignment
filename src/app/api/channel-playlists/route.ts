@@ -1,16 +1,16 @@
-import { NextResponse } from 'next/server';
+import { NextResponse } from "next/server";
 
 const YT_API_KEY = process.env.YT_API_KEY;
 
 export async function GET(request: Request) {
   try {
     const { searchParams } = new URL(request.url);
-    const channelId = searchParams.get('channelId');
+    const channelId = searchParams.get("channelId");
 
     if (!channelId) {
       return NextResponse.json(
         { error: "Valid Channel ID is required" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -22,7 +22,7 @@ export async function GET(request: Request) {
       const data = await response.json();
       return NextResponse.json(
         { error: data.error.message },
-        { status: response.status }
+        { status: response.status },
       );
     }
 
@@ -32,7 +32,7 @@ export async function GET(request: Request) {
     console.error(error);
     return NextResponse.json(
       { error: "Internal Server Error" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

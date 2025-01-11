@@ -10,7 +10,8 @@ const authOptions: NextAuthOptions = {
       authorization: {
         url: "https://accounts.google.com/o/oauth2/v2/auth",
         params: {
-          scope: "openid email profile https://www.googleapis.com/auth/youtube.readonly",
+          scope:
+            "openid email profile https://www.googleapis.com/auth/youtube.readonly",
         },
       },
     }),
