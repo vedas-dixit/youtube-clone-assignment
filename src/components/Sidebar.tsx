@@ -1,5 +1,5 @@
 import React from 'react';
-import { Home, Film, Clock, User } from 'lucide-react';
+import { Home, Film, User } from 'lucide-react';
 
 export default function Sidebar() {
   return (

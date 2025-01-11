@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
-import { fetchYouTubePlaylists, fetchChannelPlaylists, fetchPlaylistsByChannel } from "@/lib/youtube";
+import { fetchYouTubePlaylists, fetchChannelPlaylists } from "@/lib/youtube";
 import { MoreVertical, Loader2 } from "lucide-react";
 
 export default function Dashboard() {

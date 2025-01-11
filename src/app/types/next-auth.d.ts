@@ -5,3 +5,5 @@ declare module "next-auth" {
     accessToken?: string;
   }
 }
+
+export const _unusedNextAuth = NextAuth;

@@ -34,19 +34,8 @@ export async function fetchYouTubePlaylists(accessToken: string) {
     return response.json();
   }
   
-  export async function fetchPlaylistsByChannel(channelId: string, apiKey: string | undefined) {
-    const response = await fetch(
-      `https://www.googleapis.com/youtube/v3/playlists?part=snippet&channelId=${channelId}&key=${apiKey}`
-    );
-  
-    if (!response.ok) {
-      throw new Error("Failed to fetch playlists");
-    }
-  
-    return response.json();
-  }
 
-  export const fetchChannelPlaylists = async (channelId: any) => {
+  export const fetchChannelPlaylists = async (channelId: string) => {
     const API_KEY = process.env.NEXT_PUBLIC_YT_API_KEY;
     const maxResults = 50;
     console.log("aoihihoafoia")

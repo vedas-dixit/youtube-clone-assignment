@@ -1,16 +1,30 @@
 "use client";
 
-import {  useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { fetchPlaylistVideos } from "@/lib/youtube";
-import { MoreVertical, Play, Plus, Share2, Pencil } from 'lucide-react';
+import { MoreVertical, Play, Plus, Share2, Pencil } from "lucide-react";
+
+interface VideoSnippet {
+  title: string;
+  channelTitle: string;
+  thumbnails: {
+    medium: {
+      url: string;
+    };
+  };
+  playlistTitle?: string;
+}
+
+interface Video {
+  id: string;
+  snippet: VideoSnippet;
+}
 
 export default function PlaylistVideos({ params }: { params: { playlistId: string } }) {
   const { data: session } = useSession();
-  const [videos, setVideos] = useState<any[]>([]);
+  const [videos, setVideos] = useState<Video[]>([]);
   const [loading, setLoading] = useState(true);
-  const router = useRouter();
   const playlistId = params.playlistId;
 
   useEffect(() => {
@@ -28,8 +42,6 @@ export default function PlaylistVideos({ params }: { params: { playlistId: strin
     }
     getVideos();
   }, [session, playlistId]);
-
-
 
   if (loading) {
     return (
@@ -51,8 +63,8 @@ export default function PlaylistVideos({ params }: { params: { playlistId: strin
       <div className="flex flex-col md:flex-row gap-6 p-6">
         <div className="w-full md:w-80 flex-shrink-0">
           <div className="rounded-lg overflow-hidden mb-4 aspect-video">
-            <img 
-              src={playlistThumbnail} 
+            <img
+              src={playlistThumbnail}
               alt={playlistTitle}
               className="w-full h-full object-cover"
             />
@@ -99,8 +111,8 @@ export default function PlaylistVideos({ params }: { params: { playlistId: strin
                 <div className="text-gray-400 w-8 text-center">{index + 1}</div>
                 <div className="relative flex-shrink-0">
                   <div className="aspect-video w-40 rounded-lg overflow-hidden">
-                    <img 
-                      src={video.snippet.thumbnails.medium.url} 
+                    <img
+                      src={video.snippet.thumbnails.medium.url}
                       alt={video.snippet.title}
                       className="w-full h-full object-cover"
                     />
