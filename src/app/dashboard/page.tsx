@@ -6,14 +6,38 @@ import { useSession } from "next-auth/react";
 import { fetchYouTubePlaylists, fetchChannelPlaylists } from "@/lib/youtube";
 import { MoreVertical, Loader2 } from "lucide-react";
 
+interface PlaylistSnippet {
+  title: string;
+  channelTitle: string;
+  publishedAt: string;
+  thumbnails: {
+    medium: {
+      url: string;
+    };
+  };
+}
+
+interface PlaylistContentDetails {
+  itemCount: number;
+}
+
+interface Playlist {
+  id: string;
+  snippet: PlaylistSnippet;
+  contentDetails: PlaylistContentDetails;
+  status?: {
+    privacyStatus: string;
+  };
+}
+
+
 export default function Dashboard() {
   const { data: session } = useSession();
-  const [playlists, setPlaylists] = useState<any[]>([]);
+  const [playlists, setPlaylists] = useState<Playlist[]>([]);
   const [loading, setLoading] = useState(true);
   const [channelId, setChannelId] = useState("");
   const [searchLoading, setSearchLoading] = useState(false);
-  const [searchedPlaylists, setSearchedPlaylists] = useState<any[]>([]);
-
+  const [searchedPlaylists, setSearchedPlaylists] = useState<Playlist[]>([]);
 
   useEffect(() => {
     async function getPlaylists() {
