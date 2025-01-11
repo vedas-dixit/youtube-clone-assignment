@@ -21,17 +21,27 @@ interface Video {
   snippet: VideoSnippet;
 }
 
-export default function PlaylistVideos({ params }: { params: { playlistId: string } }) {
+export default function PlaylistVideos({ params }: { params: Promise<{ playlistId: string }> }) {
   const { data: session } = useSession();
   const [videos, setVideos] = useState<Video[]>([]);
   const [loading, setLoading] = useState(true);
-  const playlistId = params.playlistId;
+  
+  // Ensure that params is resolved before using it
+  const [resolvedParams, setResolvedParams] = useState<{ playlistId: string } | null>(null);
 
   useEffect(() => {
-    async function getVideos() {
-      if (session?.accessToken) {
+    async function resolveParams() {
+      const resolved = await params; // Resolve the promise here
+      setResolvedParams(resolved);
+    }
+    resolveParams();
+  }, [params]);
+
+  useEffect(() => {
+    if (resolvedParams?.playlistId && session?.accessToken) {
+      async function getVideos() {
         try {
-          const data = await fetchPlaylistVideos(session.accessToken, playlistId);
+          const data = await fetchPlaylistVideos(session?.accessToken || "", resolvedParams?.playlistId || "");
           setVideos(data.items);
         } catch (error) {
           console.error("Error fetching videos:", error);
@@ -39,9 +49,9 @@ export default function PlaylistVideos({ params }: { params: { playlistId: strin
           setLoading(false);
         }
       }
+      getVideos();
     }
-    getVideos();
-  }, [session, playlistId]);
+  }, [session, resolvedParams]);
 
   if (loading) {
     return (
